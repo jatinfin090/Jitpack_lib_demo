@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.example.loanlib'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         minSdk 24
@@ -28,14 +28,84 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    testFixtures {
+        enable = true
+    }
+
+    publishing {
+        singleVariant('release') {
+            withSourcesJar()
+        }
+    }
 }
+publishing {
+
+  /*  publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }*/
+
+
+  /*  publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.demo_loansdk'
+            artifactId = 'loansdk'
+            version = "1.1.5"
+            artifact("$buildDir/outputs/aar/LoanLib-release.aar")
+        }
+    }
+
+    repositories {
+        mavenLocal()
+        maven {
+            url = uri("https://maven.pkg.github.com/jatinfin090/Jitpack_lib_demo")
+            name = 'GithubPackages'
+            credentials {
+                //username = System.getenv("jatinfin090")
+                username = "jatinfin090"
+                  password = "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"
+                //password = System.getenv("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")
+            }
+        }
+    }*/
+}
+
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+}
+
+
+//// this function is used to publish the library to local maven repository
+afterEvaluate {
+    android.libraryVariants.each { variant ->
+       publishing.publications.create(variant.name, MavenPublication) {
+           from components.findByName(variant.name)
+            groupId = 'com.example.loanlib'
+            artifactId = 'Jitpack_lib_demo'
+            version = "1.1.7"
+
+        }
+    /*publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                groupId = 'com.demo_loansdk'
+                artifactId = 'loansdk'
+                version = "1.1.6"
+                artifact("$buildDir/outputs/aar/LoanLib-release.aar")
+            }
+        }
+    }*/
+}
 }
